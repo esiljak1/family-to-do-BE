@@ -1,5 +1,7 @@
 package com.esiljak1.familytodo.user;
 
+import com.esiljak1.familytodo.authentication.Authentication;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,8 +21,19 @@ public class User {
     private String name;
     private String surname;
     private String email;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    private Authentication authentication;
 
     public User() {
+    }
+
+    public User(Long id, String name, String surname, String email, Authentication authentication) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.authentication = authentication;
     }
 
     public User(Long id, String name, String surname, String email) {
@@ -66,5 +79,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Authentication getAuthentication() {
+        return authentication;
+    }
+
+    public void setAuthentication(Authentication authentication) {
+        this.authentication = authentication;
     }
 }
