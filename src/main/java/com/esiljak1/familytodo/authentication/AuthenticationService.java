@@ -16,6 +16,6 @@ public class AuthenticationService {
     public Authentication createPasswordHash(String password){
         String salt = BCrypt.gensalt();
         String hash = BCrypt.hashpw(password, salt);
-        return authenticationRepository.save(new Authentication(hash, salt));
+        return authenticationRepository.save(new Authentication(hash));
     }
 }

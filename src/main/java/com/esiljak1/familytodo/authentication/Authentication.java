@@ -17,20 +17,17 @@ public class Authentication {
     )
     private Long id;
     private String hashedPassword;
-    private String passwordSalt;
 
     public Authentication() {
     }
 
-    public Authentication(Long id, String hashedPassword, String passwordSalt) {
+    public Authentication(Long id, String hashedPassword) {
         this.id = id;
         this.hashedPassword = hashedPassword;
-        this.passwordSalt = passwordSalt;
     }
 
-    public Authentication(String hashedPassword, String passwordSalt) {
+    public Authentication(String hashedPassword) {
         this.hashedPassword = hashedPassword;
-        this.passwordSalt = passwordSalt;
     }
 
     public Long getId() {
@@ -49,11 +46,4 @@ public class Authentication {
         this.hashedPassword = hashedPassword;
     }
 
-    public String getPasswordSalt() {
-        return passwordSalt;
-    }
-
-    public void setPasswordSalt(String passwordSalt) {
-        this.passwordSalt = passwordSalt;
-    }
 }

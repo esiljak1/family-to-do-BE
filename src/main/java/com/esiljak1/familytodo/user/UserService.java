@@ -1,5 +1,6 @@
 package com.esiljak1.familytodo.user;
 
+import com.esiljak1.familytodo.authentication.Authentication;
 import com.esiljak1.familytodo.authentication.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,10 @@ public class UserService {
 
     public List<User> getUsers(){
         return userRepository.findAll();
+    }
+
+    public User postUser(UserDTO userDTO){
+        Authentication auth = authenticationService.createPasswordHash(userDTO.getPassword());
+        return userRepository.save(new User(userDTO.getName(), userDTO.getSurname(), userDTO.getEmail(), auth));
     }
 }
