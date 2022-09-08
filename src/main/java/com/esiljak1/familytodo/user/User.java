@@ -3,7 +3,7 @@ package com.esiljak1.familytodo.user;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "user_member")
 public class User {
     @Id
     @SequenceGenerator(
@@ -38,6 +38,10 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

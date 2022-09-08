@@ -1,15 +1,20 @@
 package com.esiljak1.familytodo.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService {
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public List<User> getUsers(){
-        return List.of(
-                new User(1L, "Student", "Prvi", "student1@gmail.com"),
-                new User(2L, "Student", "Drugi", "student2@gmail.com")
-        );
+        return userRepository.findAll();
     }
 }
