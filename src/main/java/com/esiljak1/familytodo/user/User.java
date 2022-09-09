@@ -1,8 +1,11 @@
 package com.esiljak1.familytodo.user;
 
 import com.esiljak1.familytodo.authentication.Authentication;
+import com.esiljak1.familytodo.family.Family;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user_member")
@@ -22,8 +25,16 @@ public class User {
     private String surname;
     private String email;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "auth_id")
     private Authentication authentication;
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "user_family",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "family_id")
+    )
+    private List<Family> families = new ArrayList<>();
 
     public User() {
     }
@@ -86,6 +97,14 @@ public class User {
 
     public void setAuthentication(Authentication authentication) {
         this.authentication = authentication;
+    }
+
+    public List<Family> getFamilies() {
+        return families;
+    }
+
+    public void setFamilies(List<Family> families) {
+        this.families = families;
     }
 
     @Override

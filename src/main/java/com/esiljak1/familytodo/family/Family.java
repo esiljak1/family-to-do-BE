@@ -1,6 +1,9 @@
 package com.esiljak1.familytodo.family;
 
+import com.esiljak1.familytodo.user.User;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table
@@ -18,6 +21,11 @@ public class Family {
     private Long id;
     private String name;
     private Boolean isPrivate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private User owner;
+    @ManyToMany(mappedBy = "families")
+    private List<User> users;
 
     public Family() {
     }
@@ -55,5 +63,21 @@ public class Family {
 
     public void setPrivate(Boolean aPrivate) {
         isPrivate = aPrivate;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
