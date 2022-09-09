@@ -19,6 +19,13 @@ public class UserService {
         user.setEmail(userDTO.getEmail() != null ? userDTO.getEmail() : user.getEmail());
     }
 
+    private void updateUserAuth(User user, UserDTO userDTO){
+        Authentication auth = authenticationService.updatePasswordHash(user.getAuthentication().getId(), userDTO.getPassword());
+        if(auth != null){
+            user.setAuthentication(auth);
+        }
+    }
+
     @Autowired
     public UserService(UserRepository userRepository, AuthenticationService authenticationService) {
         this.userRepository = userRepository;
@@ -39,7 +46,8 @@ public class UserService {
         if(user.isEmpty()){
             throw new IllegalArgumentException("No user with specified id");
         }
-        //check if auth needs update
+
+        updateUserAuth(user.get(), userDTO);
         userDTOtoUser(user.get(), userDTO);
 
         return userRepository.save(user.get());
