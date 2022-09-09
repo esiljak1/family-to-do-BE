@@ -6,11 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final AuthenticationService authenticationService;
+
+    private static void userDTOtoUser(User user, UserDTO userDTO){
+        user.setName(userDTO.getName() != null ? userDTO.getName() : user.getName());
+        user.setSurname(userDTO.getSurname() != null ? userDTO.getSurname() : user.getSurname());
+        user.setEmail(userDTO.getEmail() != null ? userDTO.getEmail() : user.getEmail());
+    }
 
     @Autowired
     public UserService(UserRepository userRepository, AuthenticationService authenticationService) {
@@ -25,6 +32,17 @@ public class UserService {
     public User postUser(UserDTO userDTO){
         Authentication auth = authenticationService.createPasswordHash(userDTO.getPassword());
         return userRepository.save(new User(userDTO.getName(), userDTO.getSurname(), userDTO.getEmail(), auth));
+    }
+
+    public User updateUser(Long userId, UserDTO userDTO){
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()){
+            throw new IllegalArgumentException("No user with specified id");
+        }
+        //check if auth needs update
+        userDTOtoUser(user.get(), userDTO);
+
+        return userRepository.save(user.get());
     }
 
     public void deleteUser(Long userId){

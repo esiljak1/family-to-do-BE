@@ -87,4 +87,15 @@ public class User {
     public void setAuthentication(Authentication authentication) {
         this.authentication = authentication;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", authentication=" + authentication +
+                '}';
+    }
 }
