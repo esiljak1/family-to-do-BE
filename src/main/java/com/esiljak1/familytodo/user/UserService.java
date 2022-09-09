@@ -26,4 +26,15 @@ public class UserService {
         Authentication auth = authenticationService.createPasswordHash(userDTO.getPassword());
         return userRepository.save(new User(userDTO.getName(), userDTO.getSurname(), userDTO.getEmail(), auth));
     }
+
+    public void deleteUser(Long userId){
+        if(userId == null){
+            throw new IllegalArgumentException("You have to pass userId");
+        }
+
+        if(!userRepository.existsById(userId))
+            return;
+
+        userRepository.deleteById(userId);
+    }
 }

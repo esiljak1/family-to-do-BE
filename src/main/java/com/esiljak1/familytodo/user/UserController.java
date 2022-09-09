@@ -24,4 +24,9 @@ public class UserController {
     public User postUser(@RequestBody UserDTO userDTO){
         return userService.postUser(userDTO);
     }
+
+    @DeleteMapping(path = "{userId}")
+    public void deleteUser(@PathVariable("userId") Long userId){
+        userService.deleteUser(userId);
+    }
 }
