@@ -25,7 +25,7 @@ public class User {
     private String surname;
     private String email;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "auth_id")
+    @JoinColumn(name = "id")
     private Authentication authentication;
 
     @ManyToMany(cascade = { CascadeType.ALL })
