@@ -20,8 +20,8 @@ public class Family {
     )
     private Long id;
     private String name;
-    private Boolean isPrivate;
-    @ManyToOne(fetch = FetchType.LAZY)
+    private boolean isPrivate;
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
     private User owner;
     @ManyToMany(mappedBy = "families")
@@ -30,9 +30,10 @@ public class Family {
     public Family() {
     }
 
-    public Family(String name, Boolean isPrivate) {
+    public Family(String name, Boolean isPrivate, User owner) {
         this.name = name;
         this.isPrivate = isPrivate;
+        this.owner = owner;
     }
 
     public Family(Long id, String name, Boolean isPrivate) {
