@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "user_member")
@@ -33,11 +32,7 @@ public class User implements UserDetails {
     @Column
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<Roles> roles = new ArrayList<>();
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private Authentication authentication;
-
+    private List<Roles> roles = List.of(Roles.ROLE_USER);
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "user_family",
@@ -49,11 +44,12 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String surname, String email, Authentication authentication) {
+    public User(Long id, String name, String surname, String email, String password) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.authentication = authentication;
+        this.password = password;
     }
 
     public User(Long id, String name, String surname, String email) {
@@ -101,14 +97,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public Authentication getAuthentication() {
-        return authentication;
-    }
-
-    public void setAuthentication(Authentication authentication) {
-        this.authentication = authentication;
-    }
-
     public List<Family> getFamilies() {
         return families;
     }
@@ -124,8 +112,11 @@ public class User implements UserDetails {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
-                ", authentication=" + authentication +
                 '}';
+    }
+
+    public void addRole(Roles role){
+        roles.add(role);
     }
 
     @Override
@@ -140,6 +131,10 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
     }
 
     @Override

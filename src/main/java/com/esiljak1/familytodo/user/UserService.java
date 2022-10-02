@@ -3,6 +3,7 @@ package com.esiljak1.familytodo.user;
 import com.esiljak1.familytodo.authentication.Authentication;
 import com.esiljak1.familytodo.authentication.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final AuthenticationService authenticationService;
 
+    private boolean isPasswordValid(String password){
+        return password != null && !password.isEmpty();
+    }
+
     private static void userDTOtoUser(User user, UserDTO userDTO){
         user.setName(userDTO.getName() != null ? userDTO.getName() : user.getName());
         user.setSurname(userDTO.getSurname() != null ? userDTO.getSurname() : user.getSurname());
@@ -20,10 +25,6 @@ public class UserService {
     }
 
     private void updateUserAuth(User user, UserDTO userDTO){
-        Authentication auth = authenticationService.updatePasswordHash(user.getAuthentication().getId(), userDTO.getPassword());
-        if(auth != null){
-            user.setAuthentication(auth);
-        }
     }
 
     @Autowired
@@ -36,9 +37,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User postUser(UserDTO userDTO){
-        Authentication auth = authenticationService.createPasswordHash(userDTO.getPassword());
-        return userRepository.save(new User(userDTO.getName(), userDTO.getSurname(), userDTO.getEmail(), auth));
+    public User postUser(User user){
+        if(!isPasswordValid(user.getPassword())){
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+        String salt = BCrypt.gensalt();
+        user.setPassword(BCrypt.hashpw(user.getPassword(), salt));
+        return userRepository.save(user);
     }
 
     public User updateUser(Long userId, UserDTO userDTO){
