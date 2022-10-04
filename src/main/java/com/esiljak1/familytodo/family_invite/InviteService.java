@@ -25,22 +25,36 @@ public class InviteService {
         this.familyRepository = familyRepository;
     }
 
+    private ResponseEntity<?> error(String message){
+        Map<String, String> responseMap = new HashMap<>();
+        responseMap.put("Message", message);
+        return ResponseEntity.status(400).body(responseMap);
+    }
+
     public ResponseEntity<?> createInvite(Long familyId, Long userId){
         Optional<Family> family = familyRepository.findById(familyId);
-        Map<String, Object> responseMap = new HashMap<>();
-        if(family.isEmpty()) {
-            responseMap.put("Message", "Family with id " + familyId + " doesn't exist");
-            return ResponseEntity.status(400).body(responseMap);
-        }
+        if(family.isEmpty())
+            return error("Family with id " + familyId + " doesn't exist");
 
         Optional<User> user = userRepository.findById(userId);
-        if(user.isEmpty()) {
-            responseMap.put("Message", "User with id " + userId + " doesn't exist");
-            return ResponseEntity.status(400).body(responseMap);
-        }
+        if(user.isEmpty())
+            return error("User with id " + userId + " doesn't exist");
 
         Invite invite = inviteRepository.save(new Invite(user.get(), family.get()));
+        Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("Data", invite);
+        return ResponseEntity.ok(responseMap);
+    }
+
+    public ResponseEntity<?> getInvitesForUser(Long userId){
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("Data", inviteRepository.findAllByInvitedUserId(userId));
+        return ResponseEntity.ok(responseMap);
+    }
+
+    public ResponseEntity<?> getInvitesForFamily(Long familyId) {
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("Data", inviteRepository.findAllByFamily_Id(familyId));
         return ResponseEntity.ok(responseMap);
     }
 }

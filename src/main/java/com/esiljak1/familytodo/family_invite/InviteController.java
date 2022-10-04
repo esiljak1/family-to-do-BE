@@ -18,4 +18,14 @@ public class InviteController {
     public ResponseEntity<?> createInvite(@PathVariable("familyId") Long familyId, @RequestBody Long userId){
         return inviteService.createInvite(familyId, userId);
     }
+
+    @GetMapping(path = "/forUser/{userId}")
+    public ResponseEntity<?> getInvitesForUser(@PathVariable("userId") Long userId){
+        return inviteService.getInvitesForUser(userId);
+    }
+
+    @GetMapping(path = "/forFamily/{familyId}")
+    public ResponseEntity<?> getInvitesForFamily(@PathVariable("familyId") Long familyId){
+        return inviteService.getInvitesForFamily(familyId);
+    }
 }
