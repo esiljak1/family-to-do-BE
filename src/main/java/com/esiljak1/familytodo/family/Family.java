@@ -1,5 +1,6 @@
 package com.esiljak1.familytodo.family;
 
+import com.esiljak1.familytodo.family_invite.Invite;
 import com.esiljak1.familytodo.user.User;
 
 import javax.persistence.*;
@@ -26,6 +27,8 @@ public class Family {
     private User owner;
     @ManyToMany(mappedBy = "families")
     private List<User> users;
+    @OneToMany(mappedBy = "family")
+    private List<Invite> invites;
 
     public Family() {
     }

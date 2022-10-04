@@ -21,12 +21,6 @@ public class FamilyService {
         return selectedUser.get();
     }
 
-    private void updateUser(User user, Family family) {
-        List<Family> userFamilies = user.getFamilies();
-        userFamilies.add(family);
-        userRepository.save(user);
-    }
-
     @Autowired
     public FamilyService(FamilyRepository familyRepository, UserRepository userRepository) {
         this.familyRepository = familyRepository;
@@ -39,7 +33,6 @@ public class FamilyService {
 
     public void createFamily(FamilyDTO familyDTO) throws NonExistentUserException {
         User user = getUserWithId(familyDTO.getOwnerId());
-        Family family = familyRepository.save(new Family(familyDTO.getName(), familyDTO.isPrivate(), user));
-        //updateUser(user, family);
+        familyRepository.save(new Family(familyDTO.getName(), familyDTO.isPrivate(), user));
     }
 }

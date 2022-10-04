@@ -1,6 +1,7 @@
 package com.esiljak1.familytodo.user;
 
 import com.esiljak1.familytodo.family.Family;
+import com.esiljak1.familytodo.family_invite.Invite;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +42,8 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "family_id")
     )
     private List<Family> families = new ArrayList<>();
+    @OneToMany(mappedBy = "invitedUser")
+    private List<Invite> invites = new ArrayList<>();
 
     public User() {
     }
@@ -161,5 +164,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public List<Invite> getInvites() {
+        return invites;
+    }
+
+    public void setInvites(List<Invite> invites) {
+        this.invites = invites;
     }
 }
