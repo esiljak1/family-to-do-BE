@@ -27,8 +27,7 @@ public class Invite {
     @JoinColumn(name = "family_id", referencedColumnName = "id")
     private Family family;
 
-    public Invite(Long id, User invitedUser, Family family) {
-        this.id = id;
+    public Invite(User invitedUser, Family family) {
         this.invitedUser = invitedUser;
         this.family = family;
     }
