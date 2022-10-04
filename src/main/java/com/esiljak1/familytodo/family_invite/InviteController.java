@@ -28,4 +28,14 @@ public class InviteController {
     public ResponseEntity<?> getInvitesForFamily(@PathVariable("familyId") Long familyId){
         return inviteService.getInvitesForFamily(familyId);
     }
+
+    @PostMapping(path = "/accept")
+    public ResponseEntity<?> acceptInvite(@RequestBody InviteDTO inviteDTO){
+        return inviteService.acceptInvite(inviteDTO);
+    }
+
+    @PostMapping(path = "/decline")
+    public ResponseEntity<?> declineInvite(@RequestBody InviteDTO inviteDTO){
+        return inviteService.deleteInvite(inviteDTO);
+    }
 }

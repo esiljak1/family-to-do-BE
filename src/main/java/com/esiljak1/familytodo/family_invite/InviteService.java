@@ -57,4 +57,25 @@ public class InviteService {
         responseMap.put("Data", inviteRepository.findAllByFamily_Id(familyId));
         return ResponseEntity.ok(responseMap);
     }
+
+    public ResponseEntity<?> acceptInvite(InviteDTO inviteDTO) {
+        Optional<Family> family = familyRepository.findById(inviteDTO.getFamilyId());
+        if(family.isEmpty())
+            return error("Family with id " + inviteDTO.getFamilyId() + " doesn't exist");
+
+        Optional<User> user = userRepository.findById(inviteDTO.getUserId());
+        if(user.isEmpty())
+            return error("User with id " + inviteDTO.getUserId() + " doesn't exist");
+
+        Family databaseFamily = family.get();
+        databaseFamily.addUser(user.get());
+        familyRepository.save(databaseFamily);
+
+        return deleteInvite(inviteDTO);
+    }
+
+    public ResponseEntity<?> deleteInvite(InviteDTO inviteDTO){
+        inviteRepository.deleteById(inviteDTO.getId());
+        return ResponseEntity.ok("Success");
+    }
 }
