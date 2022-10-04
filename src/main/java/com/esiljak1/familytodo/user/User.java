@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -134,8 +135,7 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password){
-        String salt = BCrypt.gensalt();
-        this.password = BCrypt.hashpw(password, salt);
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 
     @Override

@@ -1,14 +1,16 @@
 package com.esiljak1.familytodo.security;
 
+import com.esiljak1.familytodo.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,10 +26,17 @@ import java.util.Map;
 public class SecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
     private final UserDetailsService userDetailsService;
+    private final AuthenticationConfiguration authConfiguration;
 
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService, JwtRequestFilter jwtRequestFilter, AuthenticationConfiguration authConfiguration) {
         this.jwtRequestFilter = jwtRequestFilter;
         this.userDetailsService = userDetailsService;
+        this.authConfiguration = authConfiguration;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() throws Exception {
+        return authConfiguration.getAuthenticationManager();
     }
 
     @Autowired

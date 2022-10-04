@@ -17,10 +17,10 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil implements Serializable {
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     private Claims getAllClaimsFromToken(String token){
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
     private boolean isTokenExpired(String token) {
