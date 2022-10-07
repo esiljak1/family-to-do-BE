@@ -2,6 +2,7 @@ package com.esiljak1.familytodo.user;
 
 import com.esiljak1.familytodo.family.Family;
 import com.esiljak1.familytodo.family_invite.Invite;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +36,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Roles> roles = List.of(Roles.ROLE_USER);
+    @JsonIgnore
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "user_family",

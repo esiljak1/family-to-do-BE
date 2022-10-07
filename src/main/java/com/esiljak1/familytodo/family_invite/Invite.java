@@ -2,6 +2,7 @@ package com.esiljak1.familytodo.family_invite;
 
 import com.esiljak1.familytodo.family.Family;
 import com.esiljak1.familytodo.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -19,10 +20,12 @@ public class Invite {
             generator = "invite_sequence"
     )
     private Long id;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User invitedUser;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "family_id", referencedColumnName = "id")
     private Family family;

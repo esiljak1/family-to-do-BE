@@ -2,6 +2,7 @@ package com.esiljak1.familytodo.family;
 
 import com.esiljak1.familytodo.family_invite.Invite;
 import com.esiljak1.familytodo.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,6 +26,7 @@ public class Family {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
     private User owner;
+    @JsonIgnore
     @ManyToMany(mappedBy = "families")
     private List<User> users;
     @OneToMany(mappedBy = "family")

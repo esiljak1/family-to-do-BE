@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/auth/v1/invite")
+@RequestMapping("/api/v1/invite")
 public class InviteController {
     private final InviteService inviteService;
 
@@ -15,7 +17,8 @@ public class InviteController {
     }
 
     @PostMapping(path = "{familyId}")
-    public ResponseEntity<?> createInvite(@PathVariable("familyId") Long familyId, @RequestBody Long userId){
+    public ResponseEntity<?> createInvite(@PathVariable("familyId") Long familyId, @RequestBody Map<String, Long> requestMap){
+        Long userId = requestMap.get("userId");
         return inviteService.createInvite(familyId, userId);
     }
 
