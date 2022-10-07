@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
@@ -31,6 +30,7 @@ public class User implements UserDetails {
     private String name;
     private String surname;
     private String email;
+    @JsonIgnore
     private String password;
     @Column
     @Enumerated(EnumType.STRING)
@@ -44,6 +44,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "family_id")
     )
     private List<Family> families = new ArrayList<>();
+    @JsonIgnore
     @OneToMany(mappedBy = "invitedUser")
     private List<Invite> invites = new ArrayList<>();
 

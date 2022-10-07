@@ -42,9 +42,7 @@ public class InviteService {
 
         Invite invite = inviteRepository.save(new Invite(user.get(), family.get()));
         Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("inviteId", invite.getId());
-        responseMap.put("familyId", invite.getFamily().getId());
-        responseMap.put("userId", invite.getInvitedUser().getId());
+        responseMap.put("Data", invite);
         return ResponseEntity.ok(responseMap);
     }
 

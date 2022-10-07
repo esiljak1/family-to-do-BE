@@ -29,6 +29,7 @@ public class Family {
     @JsonIgnore
     @ManyToMany(mappedBy = "families")
     private List<User> users;
+    @JsonIgnore
     @OneToMany(mappedBy = "family")
     private List<Invite> invites;
 

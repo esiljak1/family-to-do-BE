@@ -20,12 +20,10 @@ public class Invite {
             generator = "invite_sequence"
     )
     private Long id;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User invitedUser;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "family_id", referencedColumnName = "id")
     private Family family;
