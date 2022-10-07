@@ -2,8 +2,8 @@ package com.esiljak1.familytodo.family;
 
 public class FamilyDTO {
     private String name;
-    private boolean isPrivate;
-    private long ownerId;
+    private Boolean isPrivate;
+    private Long ownerId;
 
     public FamilyDTO(String name, boolean isPrivate, long ownerId) {
         this.name = name;
@@ -19,19 +19,19 @@ public class FamilyDTO {
         this.name = name;
     }
 
-    public boolean isPrivate() {
+    public Boolean isPrivate() {
         return isPrivate;
     }
 
-    public void setPrivate(boolean aPrivate) {
+    public void setPrivate(Boolean aPrivate) {
         isPrivate = aPrivate;
     }
 
-    public long getOwnerId() {
+    public Long getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(long ownerId) {
+    public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
     }
 }

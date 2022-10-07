@@ -1,5 +1,6 @@
 package com.esiljak1.familytodo.family;
 
+import com.esiljak1.familytodo.exceptions.NonExistentFamilyException;
 import com.esiljak1.familytodo.exceptions.NonExistentUserException;
 import com.esiljak1.familytodo.user.User;
 import com.esiljak1.familytodo.user.UserRepository;
@@ -21,6 +22,15 @@ public class FamilyService {
         return selectedUser.get();
     }
 
+    private void toFamily(Family family, FamilyDTO familyDTO) {
+        if(familyDTO.getOwnerId() != null){
+            User user = getUserWithId(familyDTO.getOwnerId());
+            family.setOwner(user);
+        }
+        family.setName(familyDTO.getName() != null ? familyDTO.getName() :  family.getName());
+        family.setPrivate(familyDTO.isPrivate() != null ? familyDTO.isPrivate() : family.getPrivate());
+    }
+
     @Autowired
     public FamilyService(FamilyRepository familyRepository, UserRepository userRepository) {
         this.familyRepository = familyRepository;
@@ -31,8 +41,21 @@ public class FamilyService {
         return familyRepository.findAll();
     }
 
-    public void createFamily(FamilyDTO familyDTO) throws NonExistentUserException {
+    public Family createFamily(FamilyDTO familyDTO) throws NonExistentUserException {
         User user = getUserWithId(familyDTO.getOwnerId());
-        familyRepository.save(new Family(familyDTO.getName(), familyDTO.isPrivate(), user));
+        return familyRepository.save(new Family(familyDTO.getName(), familyDTO.isPrivate(), user));
+    }
+
+    public void deleteFamily(Long id){
+        familyRepository.deleteById(id);
+    }
+
+    public Family updateFamily(Long id, FamilyDTO familyDTO){
+        Optional<Family> family = familyRepository.findById(id);
+        if(family.isEmpty())
+            throw new NonExistentFamilyException("Family with passed id doesn't exist");
+
+        toFamily(family.get(), familyDTO);
+        return familyRepository.save(family.get());
     }
 }
